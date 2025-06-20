@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Confirmar Compra</title>
+</head>
+<body>
+    <h2>🧾 Confirmar Compra</h2>
+
+    <form th:action="@{/venta/finalizar}" method="post">
+        <label>Método de pago:</label>
+        <select name="metodoPago" required>
+            <option value="1">Tarjeta</option>
+            <option value="2">Yape</option>
+            <option value="3">Contra entrega</option>
+        </select><br><br>
+
+        <label>Cupón (opcional):</label>
+        <input type="text" name="codigoCupon"><br><br>
+
+        <button type="submit">Finalizar compra</button>
+    </form>
+
+    <p th:if="${error}" style="color:red" th:text="${error}"></p>
+    <br>
+    <a href="/carrito">← Volver al carrito</a>
+</body>
+</html>

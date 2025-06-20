@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Nuevo Cupón</title></head>
+<body>
+<h2>➕ Nuevo Cupón</h2>
+
+<form th:action="@{/admin/cupones/guardar}" method="post" th:object="${cupon}">
+    <label>Código:</label>
+    <input type="text" th:field="*{codigo}" required><br>
+
+    <label>Descripción:</label>
+    <input type="text" th:field="*{descripcion}"><br>
+
+    <label>Tipo:</label>
+    <select th:field="*{tipo}">
+        <option value="P">Porcentaje</option>
+        <option value="M">Monto fijo</option>
+    </select><br>
+
+    <label>Valor:</label>
+    <input type="number" step="0.01" th:field="*{valor}" required><br>
+
+    <label>Monto mínimo (opcional):</label>
+    <input type="number" step="0.01" th:field="*{montoMinimo}"><br>
+
+    <label>Fecha inicio:</label>
+    <input type="date" th:field="*{fechaInicio}"><br>
+
+    <label>Fecha fin:</label>
+    <input type="date" th:field="*{fechaFin}"><br>
+
+    <button type="submit">Guardar</button>
+</form>
+</body>
+</html>

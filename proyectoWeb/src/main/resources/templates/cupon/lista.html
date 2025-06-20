@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Lista de Cupones</title></head>
+<body>
+<h2>🎟️ Cupones registrados</h2>
+<a th:href="@{/admin/cupones/nuevo}">+ Nuevo cupón</a><br><br>
+
+<table>
+    <thead>
+        <tr><th>Código</th><th>Tipo</th><th>Valor</th><th>Estado</th><th>Eliminar</th></tr>
+    </thead>
+    <tbody>
+        <tr th:each="cupon : ${cupones}">
+            <td th:text="${cupon.codigo}"></td>
+            <td th:text="${cupon.tipo} == 'P' ? 'Porcentaje' : 'Monto fijo'"></td>
+            <td th:text="${cupon.valor}"></td>
+            <td th:text="${cupon.estado == '1' ? 'Activo' : 'Inactivo'}"></td>
+            <td><a th:href="@{'/admin/cupones/eliminar/' + ${cupon.id}}">❌</a></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Compra Confirmada</title>
+</head>
+<body>
+    <h2>🎉 ¡Gracias por tu compra!</h2>
+
+    <p>Tu pedido se ha registrado con éxito.</p>
+    <p>Fecha: <span th:text="${venta.fecha}"></span></p>
+    <p>Total: S/. <span th:text="${venta.total}"></span></p>
+
+    <a href="/productos">← Volver a la tienda</a>
+</body>
+</html>

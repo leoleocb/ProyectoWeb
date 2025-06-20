@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mi Carrito</title>
+</head>
+<body>
+    <h2>🛒 Tu Carrito</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Talla</th>
+                <th>Cantidad</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.producto.nombre}"></td>
+                <td th:text="${item.talla.valor}"></td>
+                <td th:text="${item.cantidad}"></td>
+                <td>
+                    <a th:href="@{/carrito/eliminar(idProducto=${item.producto.id}, idTalla=${item.talla.id})}">❌</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/productos">← Seguir comprando</a>
+    <br><br>
+    <a href="/venta/checkout"><button>🧾 Finalizar Compra</button></a>
+</body>
+</html>
