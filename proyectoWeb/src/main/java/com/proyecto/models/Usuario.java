@@ -5,12 +5,14 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "usuarios")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,5 +25,9 @@ public class Usuario {
     private LocalDate fechaNacimiento;
     private String sexo;
     private Integer estado;
-}
 
+    @Override
+    public String toString() {
+        return "Usuario{id=" + id + ", correo='" + correo + "'}";
+    }
+}

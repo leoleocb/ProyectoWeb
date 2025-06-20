@@ -23,12 +23,12 @@ public class UsuarioDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepo.findByCorreo(correo)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
         var roles = usuarioRolRepo.findByUsuario_Id(usuario.getId()).stream()
-                .map(r -> r.getRol().getNombre())
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+            .map(r -> r.getRol().getNombre())
+            .map(SimpleGrantedAuthority::new)
+            .toList();
 
         if (roles.isEmpty()) {
             throw new UsernameNotFoundException("El usuario no tiene roles asignados");
@@ -36,6 +36,8 @@ public class UsuarioDetailsServiceImpl implements UserDetailsService {
 
         return new User(usuario.getCorreo(), usuario.getPassword(), roles);
     }
-
+    
 }
+
+
 

@@ -21,15 +21,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            http
+        http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/inicio", "/login", "/registro", "/productos/**", "/css/**", "/js/**", "/img/**").permitAll()
+                .requestMatchers("/", "/inicio", "/login", "/registro", "/css/**", "/js/**", "/img/**").permitAll()
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
             )
-           .formLogin(form -> form
+            .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/productos", true) // ✅ asegurarse que /productos esté permitido
+                .defaultSuccessUrl("/", true)
                 .permitAll()
             )
             .logout(logout -> logout
@@ -38,11 +38,6 @@ public class SecurityConfig {
             );
 
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return userDetailsService;
     }
 
     @Bean
