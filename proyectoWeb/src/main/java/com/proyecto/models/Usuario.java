@@ -22,6 +22,6 @@ public class Usuario {
     private String direccion;
     private LocalDate fechaNacimiento;
     private String sexo;
-    private String estado;
+    private Integer estado;
 }
 

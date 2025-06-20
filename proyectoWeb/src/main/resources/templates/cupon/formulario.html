@@ -1,35 +1,62 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Nuevo Cupón</title></head>
-<body>
-<h2>➕ Nuevo Cupón</h2>
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Cupón</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
 
-<form th:action="@{/admin/cupones/guardar}" method="post" th:object="${cupon}">
-    <label>Código:</label>
-    <input type="text" th:field="*{codigo}" required><br>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
 
-    <label>Descripción:</label>
-    <input type="text" th:field="*{descripcion}"><br>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="mb-4 text-center">➕ Crear nuevo cupón</h4>
 
-    <label>Tipo:</label>
-    <select th:field="*{tipo}">
-        <option value="P">Porcentaje</option>
-        <option value="M">Monto fijo</option>
-    </select><br>
+                    <form th:action="@{/admin/cupones/guardar}" method="post" th:object="${cupon}">
+                        <div class="mb-3">
+                            <label class="form-label">Código</label>
+                            <input type="text" class="form-control" th:field="*{codigo}" required>
+                        </div>
 
-    <label>Valor:</label>
-    <input type="number" step="0.01" th:field="*{valor}" required><br>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <input type="text" class="form-control" th:field="*{descripcion}">
+                        </div>
 
-    <label>Monto mínimo (opcional):</label>
-    <input type="number" step="0.01" th:field="*{montoMinimo}"><br>
+                        <div class="mb-3">
+                            <label class="form-label">Tipo</label>
+                            <select class="form-select" th:field="*{tipo}">
+                                <option value="P">Porcentaje</option>
+                                <option value="M">Monto fijo</option>
+                            </select>
+                        </div>
 
-    <label>Fecha inicio:</label>
-    <input type="date" th:field="*{fechaInicio}"><br>
+                        <div class="mb-3">
+                            <label class="form-label">Valor</label>
+                            <input type="number" step="0.01" class="form-control" th:field="*{valor}" required>
+                        </div>
 
-    <label>Fecha fin:</label>
-    <input type="date" th:field="*{fechaFin}"><br>
+                        <div class="mb-3">
+                            <label class="form-label">Monto mínimo (opcional)</label>
+                            <input type="number" step="0.01" class="form-control" th:field="*{montoMinimo}">
+                        </div>
 
-    <button type="submit">Guardar</button>
-</form>
-</body>
-</html>
+                        <div class="mb-3">
+                            <label class="form-label">Fecha de inicio</label>
+                            <input type="date" class="form-control" th:field="*{fechaInicio}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Fecha de fin</label>
+                            <input type="date" class="form-control" th:field="*{fechaFin}" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Guardar Cupón</button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-3">

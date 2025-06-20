@@ -26,7 +26,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-    public Optional<Usuario> buscaePorCorreo(String correo) {
+    public Optional<Usuario> buscarPorCorreo(String correo) {
         return repo.findByCorreo(correo);
     }
 

@@ -21,15 +21,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+            http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/registro", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/", "/inicio", "/login", "/registro", "/productos/**", "/css/**", "/js/**", "/img/**").permitAll()
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             )
-            .formLogin(form -> form
+           .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/productos", true)
+                .defaultSuccessUrl("/productos", true) // ✅ asegurarse que /productos esté permitido
                 .permitAll()
             )
             .logout(logout -> logout
