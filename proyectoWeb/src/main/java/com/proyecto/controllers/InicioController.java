@@ -26,6 +26,11 @@ public class InicioController {
         return "index";
     }
     
+    @GetMapping("/cerrar-sesion")
+	public String cerrarSesion(HttpSession session) {
+		session.invalidate();
+		return "redirect:/login";
+	}
     
 }
 
