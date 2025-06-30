@@ -43,4 +43,11 @@ public class ProductoServiceImpl implements IProductoService {
     public void eliminar(Integer id) {
         repo.deleteById(id);
     }
+
+    // ✅ MÉTODO NUEVO PARA FILTROS
+    @Override
+    public List<Producto> filtrarProductos(String nombre, Integer idCategoria, Integer idMarca) {
+        String nombreLike = (nombre != null && !nombre.isBlank()) ? "%" + nombre + "%" : null;
+        return repo.buscarPorFiltros(nombreLike, idCategoria, idMarca);
+    }
 }

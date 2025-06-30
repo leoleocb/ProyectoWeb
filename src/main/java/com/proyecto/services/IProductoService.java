@@ -12,4 +12,7 @@ public interface IProductoService {
     List<Producto> buscarPorMarca(Integer idMarca);
     Producto guardar(Producto producto);
     void eliminar(Integer id);
+
+    // ✅ MÉTODO NUEVO
+    List<Producto> filtrarProductos(String nombre, Integer idCategoria, Integer idMarca);
 }
