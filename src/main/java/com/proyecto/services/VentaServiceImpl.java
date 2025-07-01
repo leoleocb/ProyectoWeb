@@ -61,7 +61,7 @@ public class VentaServiceImpl implements IVentaService {
         }
 
         Cupon cupon = null;
-        if (codigoCupon.isPresent()) {
+        if (codigoCupon.isPresent() && !codigoCupon.get().isBlank()) {
             cupon = cuponRepo.findByCodigo(codigoCupon.get())
                     .filter(c -> "1".equals(c.getEstado()))
                     .filter(c -> LocalDate.now().isAfter(c.getFechaInicio().minusDays(1)))
@@ -86,8 +86,7 @@ public class VentaServiceImpl implements IVentaService {
         venta = ventaRepo.save(venta);
 
         for (CarritoItem item : items) {
-            Producto producto = productoRepo.findById(item.getProducto().getId())
-                    .orElseThrow();
+            Producto producto = productoRepo.findById(item.getProducto().getId()).orElseThrow();
 
             BigDecimal precioFinal = producto.getPrecio()
                     .subtract(producto.getPrecio().multiply(producto.getDescuento())
@@ -101,7 +100,6 @@ public class VentaServiceImpl implements IVentaService {
             detalle.setPrecioUnitario(precioFinal);
             detalleRepo.save(detalle);
 
-            // Restar stock
             ProductoTallaStock pts = stockRepo.findById(
                     new ProductoTallaStockId(producto.getId(), item.getTalla().getId()))
                     .orElseThrow(() -> new RuntimeException("Stock no encontrado"));
@@ -112,7 +110,6 @@ public class VentaServiceImpl implements IVentaService {
             stockRepo.save(pts);
         }
 
-        // Registrar método de pago
         MetodoPago metodo = metodoPagoRepo.findById(idMetodoPago)
                 .orElseThrow(() -> new RuntimeException("Método de pago inválido"));
 
@@ -121,10 +118,8 @@ public class VentaServiceImpl implements IVentaService {
         vp.setMetodoPago(metodo);
         ventaPagoRepo.save(vp);
 
-        // Vaciar carrito
         carritoItemRepo.deleteAll(items);
 
         return venta;
     }
 }
-

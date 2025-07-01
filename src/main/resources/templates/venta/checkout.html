@@ -20,11 +20,18 @@
             </select>
         </div>
 
+        <!-- Botón para mostrar el cupón -->
         <div class="mb-3">
+            <button type="button" class="btn btn-outline-info" onclick="mostrarCupon()">¿Tienes un cupón?</button>
+        </div>
+
+        <!-- Campo de cupón oculto inicialmente -->
+        <div id="cuponDiv" class="mb-3" style="display: none;">
             <label class="form-label">Código de cupón (opcional)</label>
             <input type="text" name="codigoCupon" class="form-control">
         </div>
 
+        <!-- Mostrar error si lo hay -->
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
         <div class="d-grid">
@@ -36,6 +43,12 @@
         <a href="/carrito" class="btn btn-secondary">← Volver al carrito</a>
     </div>
 </div>
+
+<script>
+    function mostrarCupon() {
+        document.getElementById("cuponDiv").style.display = "block";
+    }
+</script>
 
 </body>
 </html>

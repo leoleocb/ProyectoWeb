@@ -20,7 +20,6 @@ public class VentaController {
     @Autowired
     private ICarritoService carritoService;
 
-    // ⚠️ Simulación de sesión (reemplazar con usuario real logueado)
     private final Integer idUsuarioSimulado = 1;
 
     @GetMapping("/checkout")
@@ -30,7 +29,7 @@ public class VentaController {
 
         model.addAttribute("items", items);
         model.addAttribute("carrito", carrito);
-        return "venta/checkout"; // 📁 templates/venta/checkout.html
+        return "venta/checkout";
     }
 
     @PostMapping("/finalizar")
@@ -40,11 +39,10 @@ public class VentaController {
         try {
             Venta venta = ventaService.registrarVenta(idUsuarioSimulado, idMetodoPago, Optional.ofNullable(codigoCupon));
             model.addAttribute("venta", venta);
-            return "venta/confirmacion"; // 📁 templates/venta/confirmacion.html
+            return "venta/confirmacion";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "venta/checkout";
         }
     }
 }
-// Nota: Asegúrate de que las vistas checkout.html y confirmacion.html existan en el directorio templates/venta
