@@ -13,10 +13,17 @@
 
     <div class="border p-4 mt-4 shadow-sm">
         <p><strong>Fecha:</strong> <span th:text="${venta.fecha}"></span></p>
-        <p><strong>Total:</strong> S/ <span th:text="${venta.total}"></span></p>
+        <p><strong>Total:</strong> S/ 
+            <span th:text="${#numbers.formatDecimal(venta.total, 1, 'COMMA', 2, 'POINT')}"></span>
+        </p>
     </div>
 
-    <a href="/productos" class="btn btn-outline-primary mt-4">← Volver al catálogo</a>
+    <div class="mt-4">
+        <a th:href="@{'/venta/boleta/' + ${venta.id}}" class="btn btn-success me-2">
+            📄 Descargar boleta en PDF
+        </a>
+        <a href="/productos" class="btn btn-outline-primary">← Volver al catálogo</a>
+    </div>
 </div>
 
 </body>
