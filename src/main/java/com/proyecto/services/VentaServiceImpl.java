@@ -43,14 +43,10 @@ public class VentaServiceImpl implements IVentaService {
     @Override
     public Venta registrarVenta(Integer idUsuario, Integer idMetodoPago, Optional<String> codigoCupon) {
         Carrito carrito = carritoRepo.findByUsuario_Id(idUsuario);
-        if (carrito == null) {
-            throw new RuntimeException("El usuario no tiene carrito");
-        }
+        if (carrito == null) throw new RuntimeException("El usuario no tiene carrito");
 
         List<CarritoItem> items = carritoItemRepo.findByCarrito_Id(carrito.getId());
-        if (items.isEmpty()) {
-            throw new RuntimeException("El carrito está vacío");
-        }
+        if (items.isEmpty()) throw new RuntimeException("El carrito está vacío");
 
         BigDecimal total = BigDecimal.ZERO;
         for (CarritoItem item : items) {
@@ -87,10 +83,8 @@ public class VentaServiceImpl implements IVentaService {
 
         for (CarritoItem item : items) {
             Producto producto = productoRepo.findById(item.getProducto().getId()).orElseThrow();
-
             BigDecimal precioFinal = producto.getPrecio()
-                    .subtract(producto.getPrecio().multiply(producto.getDescuento())
-                    .divide(BigDecimal.valueOf(100)));
+                    .subtract(producto.getPrecio().multiply(producto.getDescuento()).divide(BigDecimal.valueOf(100)));
 
             DetalleVenta detalle = new DetalleVenta();
             detalle.setVenta(venta);
@@ -121,5 +115,27 @@ public class VentaServiceImpl implements IVentaService {
         carritoItemRepo.deleteAll(items);
 
         return venta;
+    }
+
+    @Override
+    public List<Venta> listarTodas() {
+        return ventaRepo.findAll();
+    }
+
+    @Override
+    public Optional<Venta> buscarPorId(Integer id) {
+        return ventaRepo.findById(id);
+    }
+
+    @Override
+    public List<Venta> filtrarVentas(String nombreCliente, String fecha) {
+        if ((nombreCliente == null || nombreCliente.isBlank()) && (fecha == null || fecha.isBlank())) {
+            return ventaRepo.findAll();
+        }
+
+        return ventaRepo.buscarPorFiltros(
+                (nombreCliente == null || nombreCliente.isBlank()) ? null : "%" + nombreCliente.toLowerCase() + "%",
+                (fecha == null || fecha.isBlank()) ? null : fecha
+        );
     }
 }
