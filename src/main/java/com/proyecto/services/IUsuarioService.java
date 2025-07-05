@@ -11,4 +11,7 @@ public interface IUsuarioService {
     Optional<Usuario> buscarPorCorreo(String correo);
     Usuario guardar(Usuario usuario);
     void eliminar(Integer id);
+
+    // ✅ Agregado para "Mi cuenta"
+    Usuario findByCorreo(String correo);
 }

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 public class UsuarioController {
 
@@ -27,29 +29,27 @@ public class UsuarioController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    // ✅ Muestra el formulario de login
+    // ✅ Mostrar login
     @GetMapping("/login")
     public String mostrarLogin() {
-        return "login"; // Renderiza login.html desde templates
+        return "login";
     }
 
-    // ✅ Muestra el formulario de registro
+    // ✅ Mostrar registro
     @GetMapping("/registro")
     public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("usuario", new Usuario());
         return "registro";
     }
 
-    // ✅ Procesa el registro y asigna rol CLIENTE
-    
+    // ✅ Procesar registro
     @PostMapping("/registro")
-public String procesarRegistro(@ModelAttribute("usuario") Usuario usuario) {
-    usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-    usuario.setEstado(1); // ✅ ACTIVAR usuario al registrarlo
+    public String procesarRegistro(@ModelAttribute("usuario") Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        usuario.setEstado(1);
 
-    Usuario usuarioGuardado = usuarioService.guardar(usuario);
+        Usuario usuarioGuardado = usuarioService.guardar(usuario);
 
-        // Asignar rol CLIENTE automáticamente
         Rol rolCliente = rolRepo.findByNombre("CLIENTE")
                 .orElseThrow(() -> new RuntimeException("El rol CLIENTE no está registrado"));
 
@@ -59,5 +59,54 @@ public String procesarRegistro(@ModelAttribute("usuario") Usuario usuario) {
         usuarioRolRepo.save(ur);
 
         return "redirect:/productos";
+    }
+
+    // ✅ Mostrar "Mi cuenta"
+    @GetMapping("/micuenta")
+    public String miCuenta(Model model, Principal principal) {
+        String correo = principal.getName();
+        Usuario usuario = usuarioService.findByCorreo(correo);
+        model.addAttribute("usuario", usuario);
+        return "micuenta";
+    }
+
+    // ✅ Guardar cambios de datos personales
+    @PostMapping("/micuenta/guardar")
+    public String actualizarMiCuenta(@ModelAttribute("usuario") Usuario usuarioForm, Principal principal) {
+        String correo = principal.getName();
+        Usuario usuarioBD = usuarioService.findByCorreo(correo);
+
+        // Solo actualiza los campos editables
+        usuarioBD.setNombres(usuarioForm.getNombres());
+        usuarioBD.setApellidos(usuarioForm.getApellidos());
+        usuarioBD.setDireccion(usuarioForm.getDireccion());
+        usuarioBD.setSexo(usuarioForm.getSexo());
+        usuarioBD.setFechaNacimiento(usuarioForm.getFechaNacimiento());
+
+        usuarioService.guardar(usuarioBD);
+        return "redirect:/micuenta?success";
+    }
+
+    // ✅ Cambiar contraseña
+    @PostMapping("/micuenta/cambiar-password")
+    public String cambiarPassword(
+            @RequestParam("actual") String actual,
+            @RequestParam("nueva") String nueva,
+            @RequestParam("confirmar") String confirmar,
+            Principal principal) {
+
+        String correo = principal.getName();
+        Usuario usuario = usuarioService.findByCorreo(correo);
+
+        // Verifica contraseña actual y coincidencia
+        if (!passwordEncoder.matches(actual, usuario.getPassword()) || !nueva.equals(confirmar)) {
+            return "redirect:/micuenta?errorPass";
+        }
+
+        // Guardar nueva contraseña
+        usuario.setPassword(passwordEncoder.encode(nueva));
+        usuarioService.guardar(usuario);
+
+        return "redirect:/micuenta?successPass";
     }
 }

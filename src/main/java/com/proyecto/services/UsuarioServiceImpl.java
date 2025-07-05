@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-// Implementación de la interfaz IUsuarioService
 public class UsuarioServiceImpl implements IUsuarioService {
 
     @Autowired
@@ -40,4 +39,9 @@ public class UsuarioServiceImpl implements IUsuarioService {
         repo.deleteById(id);
     }
 
+    // ✅ Método agregado para uso directo en el controlador "Mi cuenta"
+    @Override
+    public Usuario findByCorreo(String correo) {
+        return repo.findByCorreo(correo).orElse(null);
+    }
 }
